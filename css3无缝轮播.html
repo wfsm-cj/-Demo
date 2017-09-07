@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			background-color: #000;
+		}
+		div{
+			width: 300px;
+			height: 200px;
+			margin: 50px auto;
+			position: relative;
+			border: 2px solid #Fff;
+			overflow: hidden;
+		}
+
+		ul{
+			width: 1800px;
+			list-style: none;
+			height: 200px;
+			position: absolute;
+			left: 0;
+			animation: move 10s linear 0s infinite;
+		}
+
+
+		ul li{
+			width: 300px;
+			height: 200px;
+			float: left;
+		}
+
+		div:hover ul{
+			animation-play-state: paused;
+		}
+
+		@keyframes move{
+			0%{
+				left: 0;
+			}
+			100%{
+				left:-1200px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<ul>
+			<li><img src="images/1.jpg" alt=""></li>
+			<li><img src="images/2.jpg" alt=""></li>
+			<li><img src="images/3.jpg" alt=""></li>
+			<li><img src="images/4.jpg" alt=""></li>
+			<li><img src="images/1.jpg" alt=""></li>
+			<!-- <li><img src="images/2.jpg" alt=""></li> -->
+		</ul>
+	</div>
+</body>
+</html>

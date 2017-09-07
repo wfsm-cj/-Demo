@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;padding: 0;
+		}
+		#main{
+			width: 1000px;
+			margin: 28px auto;
+		}
+
+		#canvas{
+			background-color: #000;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<canvas id="canvas" width="1000px" height="600px"></canvas>
+	</div>
+
+
+	<script>
+	// 实例化img对象
+		var img=new Image();
+		img.src='images/star.png'
+
+		// 定义星星类
+		var stars=[];
+		var num=100; //数量
+
+		window.onload=function(){
+			var canvas=document.getElementById('canvas');
+			var ctx=canvas.getContext('2d');
+
+
+		//创建star对象
+		function Star(){
+			//位置
+			this.x=null;
+			this.y=null;
+
+			//帧序号
+			this.picNum=null
+
+		
+		}
+
+		//初始化对象
+		Star.prototype.init=function(){
+			this.x=Math.random()*1000;
+			this.y=Math.random()*600;
+			this.picNum=Math.floor((Math.random()*6))%6;
+			
+		}
+
+
+/*1，画布上定位图像   context.drawImage(img,x,y)
+2，画布上定位图像并规定图像的宽度和高度  context.drawImage(img,x,y,width,height)
+3，剪切图像，并在画布上定位被剪切的部分
+context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height)
+sx,sy :可选 开始剪切的x，y坐标位置
+swidth,sheight: 被剪切的图像宽高度
+width，height ：要使用的图像的宽高度（伸展或缩小图像）
+*/ 
+
+		//绘制星星 
+		Star.prototype.draw=function(){
+
+			ctx.drawImage(img,this.picNum*7,0,8,8,this.x,this.y,8,8);
+		}
+
+
+		//变帧方法
+		Star.prototype.update=function(){
+			
+
+			
+			this.picNum+=1;
+			if(this.picNum>=7){
+				this.picNum=0;
+			}
+			// this.draw()
+		}
+
+
+			
+
+
+			function updateCanvas(){
+
+				ctx.clearRect(0,0,1000,600)
+				
+				for(var i=0;i<num;i++){
+					stars[i].draw();
+					stars[i].update();
+				}
+
+			}
+
+
+			for(var i=0;i<num;i++){
+				stars[i]=new Star();
+				stars[i].init();
+			}
+
+			setInterval(function(){
+				updateCanvas()	
+			},500)
+			
+
+
+		
+
+
+
+		}
+	</script>
+</body>
+</html>
