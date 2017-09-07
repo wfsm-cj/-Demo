@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			background-color: #222;
+		}
+		#container{
+			width: 500px;
+			margin: auto;
+		}
+
+		p{
+			text-align: center;
+			font-size: 7em;
+			margin: 20px 0;
+		}
+		a{
+			text-decoration: none;
+			transition: all 0.5s;
+		}
+		p a{
+			color: #ff1177;
+			font-family: Monoton;
+		}
+/*animation : name duration timing-function delay  iteration-count direction
+delay:延迟   iteration-count：动画次数  direction 规定是否轮流反向播放
+*/   
+		p a:hover{
+			color: #fff;
+			animation: none1 1.5s ease-in-out 1s infinite alternate;
+		}
+
+
+
+		@-webkit-keyframes none1 {
+  from {
+    text-shadow: 0 0 10px #fff,
+               0 0 20px  #fff,
+               0 0 30px  #fff,
+               0 0 40px  #FF1177,
+               0 0 70px  #FF1177,
+               0 0 80px  #FF1177,
+               0 0 100px #FF1177,
+               0 0 150px #FF1177;
+  }
+  to {
+    text-shadow: 0 0 5px #fff,
+               0 0 10px #fff,
+               0 0 15px #fff,
+               0 0 20px #FF1177,
+               0 0 35px #FF1177,
+               0 0 40px #FF1177,
+               0 0 50px #FF1177,
+               0 0 75px #FF1177;
+  }
+}
+
+
+	</style>
+</head>
+<body>
+	<div id="container">
+		<p><a href="#">WFSM</a></p>
+	</div>
+<style>
+	i{
+		 text-shadow:0px 0px 20px yellow,0 0 50px #fff,0 0 100px red;
+		 font-size: 100px
+	}
+</style>
+
+	<i>的看法大声道</i>
+</body>
+</html>
