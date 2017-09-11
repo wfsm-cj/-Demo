@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#myCanvas{
+				box-shadow: 0 0 5px black;
+				margin-top: 50px;
+				margin-left: 50px;
+			}
+			#myCanvas2{
+				box-shadow: 0 0 5px salmon;
+			}
+		</style>
+	</head>
+	<body>
+		<!--宽高只能在属性值设置，样式设置像素值有差别-->
+		<canvas id="myCanvas" width="500" height="500">浏览器版本太低，请更新</canvas>
+		<!--<canvas id="myCanvas2" width="50" height="50">
+		</canvas>-->
+	</body>
+	
+
+	<script>
+		//获取canvas对象
+		var canvas = document.getElementById("myCanvas");
+		//上下文:理解：canvas标签内置画笔
+		var ctx = canvas.getContext("2d");//目前仅支持2d画板
+		
+		var cx=canvas.width/2;
+		var cy=canvas.height/2;
+
+		ctx.translate(cx,cy);
+
+		function drawWatch(){
+			ctx.save();
+			ctx.beginPath();
+			ctx.strokeStyle="red";
+			ctx.lineWidth=1;
+			ctx.arc(0,0,200,0,Math.PI*2,false);
+			ctx.closePath();
+			ctx.stroke();
+			ctx.restore();
+
+			drawDial();
+			drawNumber();
+			drawNeedle();
+
+		}
+
+
+		drawWatch()
+
+		//dail  钟面，转盘
+		function drawDial(){
+			var angle=0;
+			for(var i=0;i<60;i++){
+				ctx.save()
+				ctx.rotate(angle)
+				ctx.beginPath();//重新设置一个路径 ，不然之前的那个路劲会被看做同一路径，然后被设置
+				ctx.moveTo(189,0);
+				ctx.lineTo(199,0);
+				ctx.strokeStyle="silver";//silver 银器 银色
+				ctx.lineWidth=4;
+				ctx.stroke();
+				ctx.restore();
+				angle+=2*Math.PI/60
+			}
+
+
+			var angle=0;
+			for(var i=0;i<12;i++){
+				ctx.save();
+				ctx.rotate(angle);
+				ctx.beginPath();
+				ctx.moveTo(179,0);
+				ctx.lineTo(199,0);
+				ctx.strokeStyle="black";
+				ctx.lineWidth=8;
+				ctx.stroke();
+				ctx.restore();
+				angle+=Math.PI/6;
+			}
+		}
+
+		// drawDial();
+
+
+		function drawNumber(){
+			var angle=0;
+			for(var i=12;i>0;i--){
+				ctx.save();
+				// ctx.rotate(-Math.PI/2);
+				ctx.rotate(-angle);//在rotate的时候旋转画布，相应的字也也旋转了角度
+
+				ctx.translate(0,-160)
+				ctx.rotate(angle);//对应的文字还原
+				
+				ctx.beginPath();
+				ctx.font="20px 宋体";
+				ctx.textAlign="center";
+				ctx.textBaseline="middle";
+				ctx.strokeText(i,0,0)
+				ctx.restore();
+				angle+=Math.PI/6;
+			}
+		}
+		// drawNumber()
+
+		function drawNeedle(){
+			//获取当前时间
+			currentTime();
+
+			// 时针
+			ctx.save();
+			ctx.rotate(-Math.PI/2);//起始坐标在水平上，旋转90度才是0的位置
+			console.log(ctx.hour)
+			var angle=(ctx.hour)*(Math.PI*2/12);
+			var mAngle=ctx.minutes*(Math.PI*2/60);
+			var sAngle=ctx.seconds*(Math.PI*2/60)
+
+			ctx.rotate(angle);
+			ctx.beginPath();
+			ctx.strokeStyle="#000";
+			ctx.lineCap="round";//棱角处理
+			ctx.lineWidth=10;
+			ctx.moveTo(0,0);
+			ctx.lineTo(100,0);
+			ctx.stroke();
+			ctx.restore();
+			//分针
+			ctx.save();
+			ctx.rotate(-Math.PI/2);//起始坐标在水平上，旋转90度才是0的位置
+
+			ctx.rotate(mAngle);
+			ctx.beginPath();
+			ctx.strokeStyle="red";
+			ctx.lineCap="round";//棱角处理
+			ctx.lineWidth=7;
+			ctx.moveTo(0,0);
+			ctx.lineTo(120,0);
+			ctx.stroke();
+			ctx.restore();
+
+			// 秒针
+				ctx.save();
+			ctx.rotate(-Math.PI/2);//起始坐标在水平上，旋转90度才是0的位置
+
+			ctx.rotate(sAngle);
+			ctx.beginPath();
+			ctx.strokeStyle="yellow";
+			ctx.lineCap="round";//棱角处理
+			ctx.lineWidth=5;
+			ctx.moveTo(0,0);
+			ctx.lineTo(150,0);
+			ctx.stroke();
+			ctx.restore();
+
+
+			// 原点
+			ctx.save();
+			ctx.beginPath();
+			ctx.fillStyle="gray";
+			ctx.arc(0,0,15,0,Math.PI*2,false)
+			ctx.fill();
+			ctx.restore()
+
+		
+		}
+
+
+		function currentTime(){
+			var date=new Date();
+			ctx.hour=date.getHours();
+			ctx.minutes=date.getMinutes();
+			ctx.seconds=date.getSeconds();
+		}
+
+
+		//定时器
+		setInterval(function(){
+			ctx.clearRect(-cx,-cy,canvas.width,canvas.height);
+			drawWatch()
+		},1000)
+
+	</script>
+</html>
