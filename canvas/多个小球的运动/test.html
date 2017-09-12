@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			#myCanvas{
+				box-shadow: 0 0 5px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<!--宽高只能在属性值设置，样式设置像素值有差别-->
+		<canvas id="myCanvas" width="500" height="500"></canvas>
+	</body>
+	
+
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+
+
+		function Ball(){
+			this.cx=50;
+			this.cy=50;
+			this.sx=5;
+			this.sy=2;
+			this.radius=30;
+			this.backgroundColor="red"
+		}
+
+
+		Ball.prototype.draw=function(){
+			ctx.fillStyle=this.backgroundColor;
+			ctx.beginPath();
+			ctx.arc(this.cx,this.cy,this.radius,0,2*Math.PI,false);
+			ctx.fill();
+		}
+
+		Ball.prototype.move=function(){
+			this.draw();
+			this.cx+=this.sx;
+			this.cy+=this.sy;
+			//碰壁检查
+			if(this.cx >= canvas.width - this.radius || this.cx <= this.radius) {
+				this.sx = -this.sx;
+			}
+			if(this.cy >= canvas.height - this.radius || this.cy <= this.radius) {
+				this.sy = -this.sy;
+			}
+		}
+
+
+
+
+		var balls=[];
+		for(var i=0;i<10;i++){
+			var ball=new Ball();
+			// radius
+			ball.radius=randomNumber(5,20);
+			//原点
+			ball.cx=randomNumber(ball.radius,canvas.width-ball.radius);
+			ball.cy=randomNumber(ball.radius,canvas.height-ball.radius)
+
+			ball.sx=randomNumber(-4,4);
+			ball.sy=randomNumber(-10,10);
+
+			//防止速度为0
+			ball.sx=ball.sx==0?4:ball.sx;
+			ball.sy=ball.sy==0?4:ball.sy;
+
+			ball.backgroundColor=randomColor();
+
+			ball.draw();
+			balls.push(ball)
+		}
+
+
+
+		// 取min-max中一个
+		function randomNumber(min,max){
+			return parseInt(Math.random()*(max-min)+min)
+		}
+
+		function randomColor(){
+			var r=randomNumber(0,255);
+			var g=randomNumber(0,255);
+			var b=randomNumber(0,255);
+			return "rgb("+r+","+g+","+b+")"
+		}
+
+
+
+		canvas.onmouseover=function(){
+			(function hello(){
+				ctx.clearRect(0,0,500,500);
+				for(var i=0;i<balls.length;i++){
+					balls[i].move()
+				}
+				window.framesId=window.requestAnimationFrame(hello);
+			})()
+		}
+
+
+		canvas.onmouseout=function(){
+			cancelAnimationFrame(window.framesId)
+		}
+
+
+
+	
+	</script>
+</html>
