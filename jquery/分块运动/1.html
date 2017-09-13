@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
+		div{
+			position: relative;
+			width: 700px;
+			height: 400px;
+			margin: 50px auto;
+		}
+
+		span{
+			opacity: 0;
+			position: absolute;
+			width: 70px;
+			height: 100px;
+			background-image: url(images/1.jpg);
+			background-repeat: no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<img src="images/0.jpg" alt="" width="700" height="400">
+	</div>
+
+	<script src="jquery-1.12.4.js"></script>
+	<script>
+		var W=700;
+		var H=400;
+		var cols=10;//列
+		var rows=5;//行
+		var nW=W/cols;
+		var nH=H/rows;//高度
+		var oImg=$('img');
+		var allImgPath=[
+			'images/0.jpg',
+			'images/1.jpg',
+			'images/2.jpg'
+		];
+
+
+		for(var i=0;i<rows;i++){
+			for(var j=0;j<cols;j++){
+				var _top=i*nH;
+				var _left=j*nW;
+
+
+				var oSpan=$('<span></span>');
+				oSpan.css({
+					left:_left+"px",
+					top:_top+"px",
+					width:nW+'px',
+					height:nH+"px",
+					'background-position':-_left+"px -"+_top+"px"
+				}).attr({
+					'data-c':j,
+					'data-r':i
+				});
+				oSpan.appendTo('div')
+			}
+		}
+
+
+
+		$(document).click(function(){
+			var allSpan=$('span');
+
+			allSpan.each(function(){
+				// 获得的值是字符
+				var r=parseInt($(this).attr('data-r'));
+				var c=parseInt($(this).attr('data-c'));
+				
+				var oSpan=$(this)
+				setTimeout(function(){ //异步的
+					oSpan.animate({
+						opacity:1
+					})
+				},100*(r+c))
+			})
+		})
+
+	</script>
+</body>
+</html>
