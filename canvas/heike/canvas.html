@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			height: 100%;
+			width: 100%;
+			/*background-color: #000;*/
+			margin: 0;padding: 0;
+			overflow: hidden;
+		}
+
+		canvas{
+			background-color: #000;
+			border: 1px solid #000;
+			margin-top: 50px;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="1200" height="500" id="canvas"></canvas>
+
+	<script>
+		var canvas=document.querySelector("#canvas");
+		var ctx=canvas.getContext("2d");
+
+		var arr=['a','s','d','f','g','h','j','k','l','q','w','e','r','t','y','u','i','o','p',1,2,3,4,5,6,7,8,9,0,'z','x','c','v','b','n','m'];
+
+		var width=canvas.width;
+		var height=canvas.height;
+
+		var fontWidth=30;
+
+		var columns=width/fontWidth;//列数
+
+		ctx.font=fontWidth+'px simsun';
+
+		var arr1=[];//每一个的列的长度
+		for(var i=0;i<columns;i++){
+			arr1[i]=columns;
+		}
+
+
+
+
+
+		(function con(){
+			ctx.fillStyle="rgba(0,0,0,0.09)";//透明度，叠加后越来越暗
+			ctx.fillRect(0,0,width,height);
+
+			for(var j=0;j<columns;j++){
+				var text=arr[Math.floor(Math.random()*arr.length)];
+				var text1=arr[Math.floor(Math.random()*arr.length)];
+
+				ctx.fillStyle="#fff";
+				// console.log(text,j,arr1[j])
+				ctx.fillText(text,j*fontWidth,arr1[j]*fontWidth)//arr1[j]不知道是在哪 可能是最下面，那就不会显示
+			}
+
+
+			for(var k=0;k<arr1.length;k++){
+				arr1[k]++;
+				var change=Math.random();
+				if(arr1[k]*fontWidth>height && change>0.95){
+					arr1[k]=0;
+				}
+			}
+
+			window.requestAnimationFrame(con);
+			// setTimeout(con,2000)
+
+		})()
+
+
+	</script>
+</body>
+</html>
