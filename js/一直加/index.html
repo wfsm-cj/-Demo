@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" value="0" id="input">
+	<input type="button" value="click" id="btn">
+	<script>
+		window.onload=function(){
+			var timer=null;
+			var input=document.getElementById('input');
+			var btn=document.getElementById("btn");
+
+			btn.onclick=function(){
+				var value=input.value;
+				input.value = ++value;//++value 加了再用  value++ 用了再加
+				console.log(value)
+			}
+
+			btn.onmousedown=function(){
+				var value=input.value;
+				timer=setInterval(function(){
+							input.value= ++value;
+						},300)
+			}
+
+
+
+			btn.onmouseup=function(){
+				clearInterval(timer)
+			}
+		}
+	</script>
+</body>
+</html>
