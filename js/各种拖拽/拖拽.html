@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		div{
+			position: fixed;width: 100px;height: 100px;
+			background-color: #ccc;
+		}
+		#div{
+			top: 100px;left: 100px;
+		}
+		#div2{
+			top: 200px;left: 200px;
+		}
+		#border{
+			top: 200px;left: 200px;
+			background: none;
+			border: 3px dashed red;
+			box-sizing: border-box;
+			z-index: -1;
+		}
+	</style>
+</head>
+<body>
+	<div id="div">WFSM1</div>
+	<div id="div2">WFSM2</div>
+	<div id="border"></div>
+
+	<script>
+		window.onload=function(){
+			var div=document.getElementById("div");
+
+			var div2=document.getElementById("div2");
+			var border=document.getElementById("border");
+
+			var maxLeft=document.documentElement.clientWidth-div.offsetWidth;
+			var maxTop=document.documentElement.clientHeight-div.offsetHeight;
+// 1 限制性拖拽   吸附
+			div.onmousedown=function(e){
+				var e=e || window.event;
+				// 点到自身的距离
+				var _x=e.clientX-this.offsetLeft;
+				var _y=e.clientY-this.offsetTop;
+				
+				console.log(_x,_y)
+
+				document.onmousemove=function(e){
+					var e=e || event;
+					var _left=e.clientX-_x;
+					var _top=e.clientY-_y;
+
+					if(_left<50){
+						_left=0;
+					}else if(_left>maxLeft-50){
+						_left=maxLeft;
+					}
+
+					if(_top<50){
+						_top=0;
+					}else if(_top>maxTop-50){
+						_top=maxTop;
+					}
+
+					div.innerHTML="top:"+_top;
+					div.style.opacity=0.5;
+					// 设置
+					div.style.top=_top+"px";
+					div.style.left=_left+"px";
+
+				}
+				div.onmouseup=function(){
+					document.onmousemove=div.onmouseup=null;
+					div.style.opacity=1;
+				}
+
+			}
+
+
+// 2 虚线拖拽
+			div2.onmousedown=function(e){
+				var _left,_top;
+				var e=e || event;
+				border.style.zIndex=1;
+				var _x=e.clientX-this.offsetLeft;
+				var _y=e.clientY-this.offsetTop;
+				// console.log("aa")
+
+				document.onmousemove=function(e){
+					_left=e.clientX-_x;
+					_top=e.clientY-_y;
+
+					border.style.left=_left+"px";
+					border.style.top=_top+"px";
+				}
+
+				border.onmouseup=function(){
+					document.onmousemove=border.onmouseup=null;
+					border.style.zIndex=-1;
+					div2.style.left=_left+"px"
+					div2.style.top=_top+"px";
+				}
+
+			}
+
+
+		}
+	</script>
+</body>
+</html>
