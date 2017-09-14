@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* { margin: 0; padding: 0; }
+		body { height: 2000px; }
+		ul { display: none; position: fixed; top: 100px; left: 100px; width: 160px; border:1px solid #000; border-radius: 3px; }
+		li { list-style: none; height: 35px; line-height: 35px; padding-left: 50px; border-bottom: 1px dotted #000; transition: .5s; }
+		li:last-child { border:none; }
+		li:hover { background-color: blue; color: #fff; }
+	</style>
+</head>
+<body>
+	<ul>
+		<li>复制</li>
+		<li>粘贴</li>
+		<li>刷新</li>
+		<li>剪切</li>
+		<li>审查元素</li>
+	</ul>
+	<script>
+		window.onload=function(){
+			var ul=document.querySelector("ul");
+			document.oncontextmenu=function(e){
+				var e=e || event;
+				var left=e.clientX;
+
+				var maxWidth=document.documentElement.clientWidth-ul.offsetWidth;
+				if(left>maxWidth){
+					left=maxWidth;
+				}
+
+				ul.style.left=left+"px"
+				ul.style.top=e.clientY+"px";
+
+				ul.style.display="block";
+
+				e.preventDefault();
+			}
+		}
+	</script>
+</body>
+</html>
