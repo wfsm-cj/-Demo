@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		canvas{
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" width="1000" height="600"></canvas>
+
+
+	<script>
+		var canvas=document.querySelector("#canvas");
+		var ctx=canvas.getContext("2d");
+		var circleArr=[]
+
+		function Circle(x,y,r,color){
+			this.x=x;
+			this.y=y;
+			this.r=r;
+
+		  	this.color = color || "rgb("+ (parseInt(Math.random() * 240 ) + 9) + ","+ (parseInt(Math.random() * 220 )+18) +",203)";
+
+// 随机方向
+		  	this.dx=Math.random()*12-7;
+		  	this.dy=Math.random()*12-7;
+
+		  	circleArr.push(this);
+		}
+
+
+		Circle.prototype.render=function(){
+			ctx.beginPath();
+			ctx.arc(this.x,this.y,this.r,0,2*Math.PI,false)
+			ctx.fillStyle=this.color;
+			ctx.fill();
+		}
+
+
+		Circle.prototype.update=function(){
+			this.x+=this.dx;
+			this.y+=this.dy;
+			this.r--;
+
+			if(this.r<0){
+				for(var i=0;i<circleArr.length;i++){
+					if(circleArr[i]===this){
+						circleArr.splice(i,1)
+					}
+				}
+				return false;//r不存在
+			}
+
+			return true;//r是存在的
+
+		}
+
+
+		canvas.onmousemove=function(e){
+			new Circle(e.offsetX,e.offsetY,30)
+		}
+
+
+		setInterval(function(){
+			ctx.clearRect(0,0,1000,600)
+			for(var i=0;i<circleArr.length;i++){
+				// 每一个重新绘制
+				circleArr[i].update() && circleArr[i].render()
+			}
+		},20)
+
+
+	</script>
+</body>
+</html>
