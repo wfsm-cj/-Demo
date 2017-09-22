@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{
+		margin: 0;padding: 0;
+	}
+		#container{
+			width: 300px;
+			height: 300px;
+			position: relative;
+			border: 1px solid #000;
+		}
+		img{
+			width: 100%;
+			height: 100%;
+		}
+		#img1{
+			position: absolute;
+			opacity: 0.5;
+			/*clip:rect(0,60px,100px,0px);*/
+		}
+
+		#box{
+			position: absolute;
+			top: 50px;
+			left: 50px;
+			border: 1px solid red;
+			box-sizing: border-box;
+		}
+		#btn{
+			position: absolute;
+			width: 100px;
+			height: 40px;
+		}
+	</style>
+</head>
+<body>
+	<!-- 1,获取图片并显示图片
+		2，设置一个动态传入的方框值
+		3，
+		输出坐标
+	 -->
+	 <div id="container">
+	 	<img src="1.png" alt="" id="img1">
+	 	<!-- <img src="1.png" alt="" id="img2"> -->
+
+
+	 	<div id="box"></div>
+	 </div>
+
+
+	 	<div id="show"></div>
+	 	<button id="btn" >clip</button>
+		
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script>
+
+		var _width=150;
+		var _height=150;
+
+		// document.querySelector("img")
+		var img=new Image();  //创建img
+				img.src="1.png";
+
+				img.onload=function(){
+					clip(_width,_height,"yellow")
+
+					$("#img1").after($(img))  //after()  before() 在某个元素之后或之前
+					positionImg(_width,_height,"#box")  //写在外面  首次的时候就应该是灰色
+
+					$("#btn").click(function(){
+						var obj={
+							top:$("#box").offset().top,
+							left:$("#box").offset().left,
+							width:$("#box").innerWidth(),
+							height:$("#box").innerHeight()
+						}
+						console.log(obj)
+					})
+				
+				}
+		function clip(boxWidth,boxHeight,borderColor){	
+			$("#box").css({
+				width:boxWidth,
+				height:boxHeight,
+				borderColor:borderColor,
+				backgroundColor:"opacity(255,255,255,0)"
+			})
+
+			
+
+			selectBox("#box")  //选择框
+			function selectBox(selector){
+				$(selector).mousedown(function(e){
+					var _x=e.clientX-this.offsetLeft;
+					var _y=e.clientY-this.offsetTop;
+
+				$(document).mousemove(move);
+				$(document).mouseup(up);
+
+				var maxWidth=$(selector).parent().innerWidth()-$(selector).outerWidth();
+				var maxHeight=$(selector).parent().innerHeight()-$(selector).outerHeight();
+
+				function move(e){
+					var _left=e.clientX-_x;
+					var _top=e.clientY-_y;
+
+					if(_left<0){
+							_left=0;
+						}else if(_left>maxWidth){
+							_left=maxWidth;
+						}
+
+						if(_top<0){
+							_top=0;
+						}else if(_top>maxHeight){
+							_top=maxHeight;
+						}
+
+						$("#box").offset({
+								left:_left,
+								top:_top
+							})
+
+						positionImg(boxWidth,boxHeight,"#box");//...
+
+				}
+
+
+				function up(){
+							$(document).off("mousemove",move);//解绑事件
+							$(document).off("mouseup",up);
+						}
+
+				})
+
+			}	
+
+
+			function Show(){
+
+			}
+				
+	}
+
+		function positionImg(boxWidth,boxHeight,selector){
+				
+				var _top=$(selector).offset().top;
+				var _left=$(selector).offset().left;
+				$(img).css({
+					position:"absolute",
+					// 中间两个是原点距离  第一个是距离顶部的距离 ，最后一个是距离左侧的距离
+					clip:"rect("+_top+"px,"+(_left+boxWidth)+"px,"+(_top+boxHeight)+"px,"+_left+"px)"
+					// clip:"rect(0px,100px,100px,0px)"
+				})
+
+
+			}
+
+
+
+
+	</script>
+</body>
+</html>
